@@ -8,13 +8,17 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
 
+import java.time.LocalDateTime;
+
 
 @ChannelHandler.Sharable    // can be safely shared by multiple channels
 public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf in = (ByteBuf)msg;
-        System.out.println("Server received: "+ in.toString(CharsetUtil.UTF_8));
+        ByteBuf in = (ByteBuf) msg;
+
+        System.out.println("Server received: " + in.toString(CharsetUtil.UTF_8));
+        ctx.writeAndFlush(Unpooled.copiedBuffer("服务器时间: "+LocalDateTime.now().toString(), CharsetUtil.UTF_8));
         ctx.write(in);
     }
 

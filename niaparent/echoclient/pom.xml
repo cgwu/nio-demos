@@ -25,8 +25,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.dannis.echoserver.EchoServer</mainClass>
+                    <mainClass>com.dannis.echoclient.EchoClient</mainClass>
                     <arguments>
+                        <argument>192.168.1.88</argument>
                         <argument>9001</argument>
                     </arguments>
                 </configuration>
