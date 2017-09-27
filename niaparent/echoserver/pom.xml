@@ -26,10 +26,9 @@
                 </executions>
                 <configuration>
                     <mainClass>com.dannis.echoserver.EchoServer</mainClass>
-                    <!--<mainClass>nia.chapter2.echoserver.EchoServer</mainClass>
                     <arguments>
-                        <argument>${echo-server.port}</argument>
-                    </arguments>-->
+                        <argument>9001</argument>
+                    </arguments>
                 </configuration>
             </plugin>
         </plugins>
