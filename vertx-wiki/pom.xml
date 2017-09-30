@@ -12,6 +12,9 @@
   <properties>
     <vertx.version>3.4.2</vertx.version>
     <main.verticle>io.vertx.starter.MainVerticle</main.verticle>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
   <dependencyManagement>
@@ -26,8 +29,15 @@
     </dependencies>
   </dependencyManagement>
 
-  <!-- web -->
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/io.reactivex/rxjava -->
+    <dependency>
+      <groupId>io.reactivex</groupId>
+      <artifactId>rxjava</artifactId>
+      <version>1.3.2</version>
+    </dependency>
+
+    <!-- web -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>

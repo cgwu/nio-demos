@@ -1,3 +1,8 @@
+启动: mvn compile exec:java
+
+= 创建项目模板命令:
+mvn io.fabric8:vertx-maven-plugin:1.0.5:setup -DprojectGroupId=io.vertx.sample -DprojectArtifactId=my-first-vertx-app -Dverticle=io.vertx.sample.MyFirstVerticle
+
 = Vert.x Maven Starter
 
 This project is a template to start your own Vert.x project using Apache Maven.
