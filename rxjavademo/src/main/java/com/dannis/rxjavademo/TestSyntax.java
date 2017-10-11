@@ -12,21 +12,25 @@ import java.util.function.Consumer;
 
 public class TestSyntax {
 
-    public static void main(String[] args) {
+    public static void mainx(String[] args) {
         Observable.just(2, 3, 5, 8)
                 .map(v -> v * 3)
                 .map(v -> (v % 2 == 0) ? "even" : "odd")
                 .subscribe(System.out::println);
+
         System.out.println("---------------------");
+
         Observable<Integer> flatmapped = Observable
                 .just(-1, 0, 1)
-                .map(v -> 2 / v)
+                .map(v -> 4 / v)
+
                 .flatMap(
                         v -> Observable.just(v),
                         e -> Observable.just(0),
                         () -> Observable.just(42)
                 );
         flatmapped.subscribe(System.out::println);
+//        flatmapped.subscribe(System.out::println);
     }
 
     public static void subscribePrint(Observable<Long> observable, String name) {
@@ -111,7 +115,7 @@ public class TestSyntax {
 
     }
 
-    public static void main1(String[] args) {
+    public static void main(String[] args) {
         Observable<String> howdy = Observable.just("Howdy中国");
         howdy.subscribe(System.out::println);
 
@@ -137,6 +141,7 @@ public class TestSyntax {
                         (str, idx) -> String.format("%2d. %s", idx, str))
                 .subscribe(System.out::println);
 
+        System.out.println("##########");
         Observable.from(words)
                 .flatMap(word -> Observable.from(word.split("")))
                 .distinct()
