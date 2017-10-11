@@ -172,6 +172,15 @@ public class Demo {
                 .subscribe(System.out::println, System.out::println);
     }
 
+    static void testSingleZip() {
+        Single<String> s1 = Single.just("s1");
+        Single<String> s2 = Single.just("s2");
+        Single<String> s3 = Single.just("s3");
+        Single.zip(s1, s2, s3, (r1, r2, r3) -> {
+            return r1 + r2 + r3;
+        }).subscribe(System.out::println);
+    }
+
     public static void main(String[] args) {
 //        testObservable();
 //        from();
@@ -182,7 +191,8 @@ public class Demo {
 //        foo();
 //        testFlatMapIterable();
 //        testFlatMapIterable2();
-        testSingleFlatMap();
+//        testSingleFlatMap();
+        testSingleZip();
     }
 }
 
