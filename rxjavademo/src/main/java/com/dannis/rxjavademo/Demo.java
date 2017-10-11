@@ -1,6 +1,7 @@
 package com.dannis.rxjavademo;
 
 import rx.Observable;
+import rx.Single;
 import rx.Subscriber;
 import rx.functions.Action0;
 import rx.functions.Action1;
@@ -133,17 +134,18 @@ public class Demo {
         subscribePrint(flatMapped, "flatMap");
     }
 
-    static void testFlatMapIterable(){
+    static void testFlatMapIterable() {
         Observable<?> fIterableMapped = Observable
                 .just(
                         Arrays.asList(2, 4),
                         Arrays.asList("two", "four")
-                        )
+                )
                 .flatMapIterable(l -> l);   // 等价于　.flatMap(v -> Observable.from(v));
 
         subscribePrint(fIterableMapped, "fIterableMapped");
     }
-    static void testFlatMapIterable2(){
+
+    static void testFlatMapIterable2() {
         Observable<?> fIterableMapped = Observable
                 .just(
                         Arrays.asList(22, 4),
@@ -158,6 +160,18 @@ public class Demo {
         subscribePrint(Observable.range(110, 2), "foo");
     }
 
+    static void testSingleFlatMap() {
+        Single<String> s1 = Single.just("Hello2世界");
+//        Single<String> s1 = Single.error(new Exception("错误1"));
+
+        s1.flatMap(id -> {
+            System.out.println("id:" + id);
+            return Single.just(id + " - 中国a");
+        })
+//        s1.flatMap(id -> Single.error(new Exception("错误2")))
+                .subscribe(System.out::println, System.out::println);
+    }
+
     public static void main(String[] args) {
 //        testObservable();
 //        from();
@@ -166,8 +180,9 @@ public class Demo {
 //        testObservableCreate();
 //        testFlatMap();
 //        foo();
-        testFlatMapIterable();
-        testFlatMapIterable2();
+//        testFlatMapIterable();
+//        testFlatMapIterable2();
+        testSingleFlatMap();
     }
 }
 
