@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Get Started</title>
+	<script src="vue.min.js"></script>
+</head>
+<body>
+	<div id="app">
+		<div>{{ cp }}</div>
+		<input type="text" v-model="newTodo" v-on:keyup.enter="addTodo" v-on:keyup.down="addTodo">
+		<ul>
+			<li v-for="todo in todos">
+				<span>{{todo.text}}</span>
+				<button v-on:click="removeTodo($index, $event)">X</button>
+			</li>
+		</ul>
+		<div v-if="show">显示</div>
+		<div>初始后不再变: {{* show }}</div>
+		{{#if show}}
+		  <h1>显示</h1>
+		{{/if}}
+		<h1 v-if="show">显示 use v-if</h1>
+		<h1 v-else>隐藏 use v-if</h1>
+
+		<template v-if="show">
+		  <h1>Title</h1>
+		  <p>Paragraph 1</p>
+		  <p>Paragraph 2</p>
+		</template>
+
+		<h1 v-show="show">显示 use v-show</h1>
+
+		<button v-on:click="toggle">显示/隐藏</button>
+		<button @click="toggle">@显示/隐藏</button>
+		<a href="{{newTodo}}">#</a>
+	</div>
+	<script>
+	var vm = new Vue({
+		el:"#app",
+		data: {
+			newTodo: '',
+			todos: [
+				{text:'Add some todos'}
+			],
+			show:true
+		},
+		computed: {
+			cp: function(){
+				return this.newTodo + '$';
+			}
+		},
+		methods: {
+			addTodo: function(){
+				var text = this.newTodo.trim();
+				if(text){
+					this.todos.push({text: text});
+					this.newTodo = '';
+				}
+			},
+			removeTodo: function(index,event){
+				this.todos.splice(index,1);
+				alert(event.target.tagName);
+			},
+			toggle: function(event){
+				this.show = !this.show;
+				alert(event.target.tagName);
+			}
+		}
+	});
+
+	vm.$watch('todos',function(newVal, oldVal){
+		console.log(newVal, oldVal);
+	});
+	</script>
+</body>
+</html>

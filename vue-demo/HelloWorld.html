@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>test vue 1.x</title>
+    <script src="vue.min.js"></script>
+    <script src="jquery-3.2.1.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        {{message}}
+    </div>
+    <script>
+    new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue.js!你好'
+        }
+    });
+    </script>
+    <div id="app2">
+        <p>{{m.message}}</p>
+        <input type="text" v-model="m.message">
+        <input type="button" value="change" id="btnChange">
+    </div>
+    <script>
+    var model = {
+        message: 'Hello Vue.js!你好!'
+    };
+    new Vue({
+        el: '#app2',
+        data: {
+            m: model
+        }
+    });
+    $(function() {
+        $("#btnChange").click(function() {
+            model.message += '$';
+        });
+    });
+    </script>
+
+    <hr>
+
+    <div id="appList">
+  <ul>
+    <li v-for="todo in todos">
+      {{ todo.text }} <br>
+      <input type="text" v-model="todo.text">
+    </li>
+  </ul>
+  <input type="button" value="增加LI" id="btnAddLi">
+</div>
+<hr>
+<input type="button" value="设置父窗体变量" id="btnSetParentVar">
+<input type="button" value="打印父窗体变量" id="btnPrintParentVar">
+<script>
+/*
+	var gtodos = [
+			{ text: 'Learn Javascript'},
+			{ text: 'Learn Vue.js'},
+			{ text: 'Learn Something Awesome'}
+			];
+			*/
+	new Vue({
+		el:"#appList",
+		data:{
+			todos: parent.gtodos
+		}
+	});
+
+	$(function(){
+		$("#btnAddLi").click(function(){
+			parent.gtodos.push({text:'父new'});
+		});
+
+        $("#btnSetParentVar").click(function(){
+            parent.gtodos = parent.gtodosa;
+        });
+
+        $("#btnPrintParentVar").click(function(){
+            console.log(parent.gtodos);
+        });
+
+	});
+</script>
+
+</body>
+
+</html>
