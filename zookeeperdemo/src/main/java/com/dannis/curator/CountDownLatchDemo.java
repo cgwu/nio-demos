@@ -6,6 +6,7 @@ import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by sam on 17-10-25.
+ * 参考: http://www.iteye.com/topic/1002652
  */
 public class CountDownLatchDemo {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss|SSS");
@@ -38,9 +39,9 @@ public class CountDownLatchDemo {
 
         @Override
         public void run() {
-            System.out.println("begin work: " +workName +" at " +sdf.format(new Date()));
+            System.out.println(Thread.currentThread().getId() + " begin work: " +workName +" at " +sdf.format(new Date()));
             doWork();
-            System.out.println("end work: " +workName +" at " +sdf.format(new Date()));
+            System.out.println(Thread.currentThread().getId() +" end work: " +workName +" at " +sdf.format(new Date()));
             latch.countDown();  // !!完成工作，计数器减一!!
         }
 

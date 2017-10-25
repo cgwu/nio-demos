@@ -22,6 +22,14 @@
             <version>3.4.10</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.curator/curator-recipes -->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
+
         <!--法1，官网-->
         <!-- https://mvnrepository.com/artifact/org.apache.curator/curator-framework -->
         <dependency>
