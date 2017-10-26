@@ -1,0 +1,11 @@
+{
+  "zookeeperHosts":"192.168.1.8",
+  "sessionTimeout":20000,
+  "connectTimeout":3000,
+  "rootPath":"app1.vertx",
+  "retry": {
+    "initialSleepTime":100,
+    "intervalTimes":1000,
+    "maxTimes":3
+  }
+}
