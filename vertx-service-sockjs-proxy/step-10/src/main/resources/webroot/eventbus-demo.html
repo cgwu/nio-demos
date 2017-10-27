@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试EventBus发送和接收消息</title>
+    <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.js"></script>
+    <script src="https://cdn.bootcss.com/vertx/3.4.2/vertx-eventbus.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.slim.min.js"></script>
+</head>
+<body>
+<h1>测试EventBus发送和接收消息</h1>
+Name: <input type="text" id="txtName">
+<input type="button" value="发送" id="btnSend">
+<ul id="ulSendRes"></ul>
+<script>
+    $(function(){
+        var eb = new EventBus(window.location.protocol + "//" + window.location.host + "/eventbus");
+        /*
+         eb.onopen = function() {
+            var SomeDatabaseService = require('wiki-database-js/wiki_database_service.js');
+              var svc = new SomeDatabaseService(eb, "database-service-address");
+              // use the service
+          };
+        */
+
+        $("#btnSend").click(function(){
+            var name= $("#txtName").val();
+            //alert(name);
+            if(eb.state != EventBus.OPEN){
+                eb = new EventBus(window.location.protocol + "//" + window.location.host + "/eventbus");
+                alert('连接已经被重置,请重试!');
+                return;
+            }
+            eb.send("wikidb.queue", {'name' : name}, {'action':'sayHi'}, function (err, reply) { // <1>
+                console.log(err,reply);
+              if (err === null) {
+                $("#ulSendRes").append('<li>'+reply.body.msg+'</li>');
+              } else {
+                console.warn("Error rendering Markdown content: " + JSON.stringify(err));
+              }
+            });
+        });
+    });
+</script>
+</body>
+</html>

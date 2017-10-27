@@ -1,3 +1,7 @@
+启动禁用静态文件缓存:
+mvn compile exec:java -Dvertx.disableFileCaching=true
+
+
 = Real-time web features using cross-border messaging over the event bus
 
 TIP: The corresponding source code is in the `step-10` folder of the guide repository.

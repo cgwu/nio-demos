@@ -35,7 +35,7 @@ import java.util.List;
  * @author <a href="https://julien.ponge.org/">Julien Ponge</a>
  */
 @ProxyGen
-@VertxGen
+@VertxGen   /* 生成js和rxjava的客户端调用代码 */
 public interface WikiDatabaseService {
 
   @GenIgnore
@@ -54,7 +54,11 @@ public interface WikiDatabaseService {
   @Fluent
   WikiDatabaseService fetchPage(String name, Handler<AsyncResult<JsonObject>> resultHandler);
 
-  @Fluent
+    @Fluent
+    WikiDatabaseService sayHi(String name, Handler<AsyncResult<JsonObject>> resultHandler);
+
+
+    @Fluent
   WikiDatabaseService fetchPageById(int id, Handler<AsyncResult<JsonObject>> resultHandler);
 
   @Fluent
