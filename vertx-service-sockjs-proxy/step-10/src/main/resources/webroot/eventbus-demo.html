@@ -6,21 +6,27 @@
     <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.js"></script>
     <script src="https://cdn.bootcss.com/vertx/3.4.2/vertx-eventbus.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.slim.min.js"></script>
+    <!--<script src="https://cdn.bootcss.com/require.js/1.0.8/require.js"></script>-->
+    <!--<script src="https://cdn.bootcss.com/require.js/2.3.5/require.js"></script>-->
+    <script src="/wiki-database-js/wiki_database_service-proxy.js"></script>
 </head>
 <body>
 <h1>测试EventBus发送和接收消息</h1>
 Name: <input type="text" id="txtName">
-<input type="button" value="发送" id="btnSend">
+<input type="button" value="发送(使用EventBus)" id="btnSend">
+<input type="button" value="发送(使用js proxy)" id="btnSendSvc">
 <ul id="ulSendRes"></ul>
 <hr>
 <ul id="ulSubscribe"></ul>
+
 <script>
+    var gsvc = null;
     $(function(){
         var eb = new EventBus(window.location.protocol + "//" + window.location.host + "/eventbus");
          eb.onopen = function() {
 
-            //var SomeDatabaseService = require('wiki-database-js/wiki_database_service.js');
-            //var svc = new SomeDatabaseService(eb, "database-service-address");
+            //var SomeDatabaseService = require(['/wiki-database-js/wiki_database_service-proxy.js']);
+            gsvc = new WikiDatabaseService(eb, "wikidb.queue");
             // use the service
 
             eb.registerHandler("page.sth_happen", function (error, message) { // <2>
@@ -47,6 +53,27 @@ Name: <input type="text" id="txtName">
                 console.log(err,reply);
               if (err === null) {
                 $("#ulSendRes").append('<li>'+reply.body.msg+'</li>');
+              } else {
+                console.warn("Error rendering Markdown content: " + JSON.stringify(err));
+              }
+            });
+        });
+
+        $("#btnSendSvc").click(function(){
+            var name= $("#txtName").val();
+            //alert(name);
+            if(eb.state != EventBus.OPEN){
+                eb = new EventBus(window.location.protocol + "//" + window.location.host + "/eventbus");
+                alert('连接已经被重置,请重试!');
+                return;
+            }
+            console.log(gsvc);
+
+            // 直接使用自动生成的客户端service-proxy.js函数
+            gsvc.sayHi(name, function (err, reply) { // <1>
+                console.log(err,reply);
+              if (err === null) {
+                $("#ulSendRes").append('<li>'+reply.msg+'</li>');
               } else {
                 console.warn("Error rendering Markdown content: " + JSON.stringify(err));
               }

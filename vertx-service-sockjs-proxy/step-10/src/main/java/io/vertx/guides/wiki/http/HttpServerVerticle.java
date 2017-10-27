@@ -86,6 +86,8 @@ public class HttpServerVerticle extends AbstractVerticle {
         });
         // end::eventbus-markdown-consumer[]
 
+        // 添加自定义静态目录
+        router.get("/wiki-database-js/*").handler(StaticHandler.create("wiki-database-js").setCachingEnabled(false));
         router.get("/app/*").handler(StaticHandler.create().setCachingEnabled(false));
         router.get("/").handler(context -> context.reroute("/app/index.html"));
         router.get("/sayhi/:name").handler(this::sayHiHandler);
