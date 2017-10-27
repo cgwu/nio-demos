@@ -69,8 +69,11 @@ public class HttpServerVerticle extends AbstractVerticle {
         // tag::sockjs-handler-setup[]
         SockJSHandler sockJSHandler = SockJSHandler.create(vertx); // <1>
         BridgeOptions bridgeOptions = new BridgeOptions()
+                // EventBus进来的地址
                 .addInboundPermitted(new PermittedOptions().setAddress("wikidb.queue"))  // 数据库接口地址
                 .addInboundPermitted(new PermittedOptions().setAddress("app.markdown"))  // <2>
+                // EventBus出去的地址,可以使用正则表达式: new PermittedOptions().setAddressRegex(regex)
+                .addOutboundPermitted(new PermittedOptions().setAddress("page.sth_happen")) // <3>
                 .addOutboundPermitted(new PermittedOptions().setAddress("page.saved")); // <3>
         sockJSHandler.bridge(bridgeOptions); // <4>
         router.route("/eventbus/*").handler(sockJSHandler); // <5>
@@ -85,7 +88,7 @@ public class HttpServerVerticle extends AbstractVerticle {
 
         router.get("/app/*").handler(StaticHandler.create().setCachingEnabled(false));
         router.get("/").handler(context -> context.reroute("/app/index.html"));
-
+        router.get("/sayhi/:name").handler(this::sayHiHandler);
         router.get("/api/pages").handler(this::apiRoot);
         router.get("/api/pages/:id").handler(this::apiGetPage);
         router.post().handler(BodyHandler.create());
@@ -171,6 +174,24 @@ public class HttpServerVerticle extends AbstractVerticle {
                         apiFailure(context, 404, "There is no page with ID " + id);
                     }
                 }, t -> apiFailure(context, t));
+    }
+
+    private void sayHiHandler(RoutingContext context) {
+        String name = context.request().getParam("name");
+        dbService.sayHi(name, reply -> {
+            if (reply.succeeded()) {
+                JsonObject payLoad = reply.result();
+                String msg = payLoad.getString("msg", "无消息");
+                context.response().putHeader("Content-Type", "text/html;charset=utf8");
+                context.response().end(msg);
+
+                //发布所有消息
+                JsonObject page = new JsonObject();
+                page.put("content",msg);
+                //发布消息，页面保存
+                vertx.eventBus().publish("page.sth_happen", page); // <4>
+            }
+        });
     }
 
     private void apiRoot(RoutingContext context) {

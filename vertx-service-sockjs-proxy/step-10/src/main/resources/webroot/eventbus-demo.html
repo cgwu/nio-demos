@@ -12,16 +12,28 @@
 Name: <input type="text" id="txtName">
 <input type="button" value="发送" id="btnSend">
 <ul id="ulSendRes"></ul>
+<hr>
+<ul id="ulSubscribe"></ul>
 <script>
     $(function(){
         var eb = new EventBus(window.location.protocol + "//" + window.location.host + "/eventbus");
-        /*
          eb.onopen = function() {
-            var SomeDatabaseService = require('wiki-database-js/wiki_database_service.js');
-              var svc = new SomeDatabaseService(eb, "database-service-address");
-              // use the service
+
+            //var SomeDatabaseService = require('wiki-database-js/wiki_database_service.js');
+            //var svc = new SomeDatabaseService(eb, "database-service-address");
+            // use the service
+
+            eb.registerHandler("page.sth_happen", function (error, message) { // <2>
+                console.log('page.sth_happen', error, message);
+                $("#ulSubscribe").append('<li>'+message.body.content+'</li>');
+                /*
+                if (message.body // <3>
+                  && $scope.pageId === message.body.id // <4>
+                  && clientUuid !== message.body.client) { // <5>
+                }
+                */
+              });
           };
-        */
 
         $("#btnSend").click(function(){
             var name= $("#txtName").val();
