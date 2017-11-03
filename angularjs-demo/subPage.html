@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>test vue 1.x</title>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script src="angular-1.2.32.min.js"></script>
+   
+</head>
+
+<body>
+   <div id="app" ng-controller="myCtrl">
+        现在时间：{{ clock.now }}
+    </div>
+    <hr>
+    <div id="app">
+        现在时间：{{ clock.now }}
+    </div>
+    <hr>
+    <div ng-controller='listCtrl'>
+        {{ todos | json }}
+
+        <ul>
+          <li ng-repeat="item in todos">
+            {{item.text}}
+          </li>
+        </ul>
+    </div>
+
+<hr>
+<input type="button" value="增加LI" id="btnAddLi">
+
+<input type="button" value="设置父窗体变量" id="btnSetParentVar">
+<input type="button" value="打印父窗体变量" id="btnPrintParentVar">
+
+    <script>
+    var localTodos = [
+            { text: 'Learn Javascript'},
+            { text: 'Learn Vue.js'},
+            { text: 'Learn Something Awesome'}
+            ];
+    function myCtrl($scope){
+        $scope.clock = {
+            now : new Date()    
+        };
+    }
+    
+    var myApp = angular.module('myApp', []);
+    myApp.run(function($rootScope){
+        $rootScope.clock = {
+            now : new Date()    
+        };
+    });
+    myApp.controller('listCtrl', function($scope){
+        // $scope.todos = localTodos;
+        $scope.todos = parent.gtodos;
+    });
+
+
+    $(function(){
+        $("#btnAddLi").click(function(){
+            parent.gtodos.push({text:'父new'});
+            alert('done')
+        });
+
+        $("#btnSetParentVar").click(function(){
+            parent.gtodos = parent.gtodosa;
+        });
+
+        $("#btnPrintParentVar").click(function(){
+            console.log(parent.gtodos);
+        });
+
+    });
+
+    </script>
+    
+</body>
+</html>
